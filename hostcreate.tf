@@ -17,7 +17,7 @@ provider "yandex" {
 }
 
 #Build host
-resource "yandex_compute_instance" "build" {
+resource "yandex_compute_instance" "master" {
   name        = "master"
   platform_id = "standard-v1"
   zone        = "ru-central1-a"
@@ -43,7 +43,7 @@ resource "yandex_compute_instance" "build" {
     ssh-keys = "ubuntu:${file("/home/dmitry/lessonmonit/Lesson14Template/test.pub")}"
   }
 }
-resource "yandex_compute_instance" "build" {
+resource "yandex_compute_instance" "slave" {
   name        = "slave"
   platform_id = "standard-v1"
   zone        = "ru-central1-a"
