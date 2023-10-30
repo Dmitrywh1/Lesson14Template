@@ -18,7 +18,33 @@ provider "yandex" {
 
 #Build host
 resource "yandex_compute_instance" "build" {
-  name        = "build"
+  name        = "master"
+  platform_id = "standard-v1"
+  zone        = "ru-central1-a"
+#Chose count core and ram
+  resources {
+    cores  = 4
+    memory = 4
+  }
+#Chose ubuntu 20.04 (if I want to select another OC I can do in bash 'yc compute image list --folder-id standard-images | grep ubuntu' for exemple
+  boot_disk {
+    initialize_params {
+      image_id = "fd8ciuqfa001h8s9sa7i"
+    }
+  }
+
+  network_interface {
+    subnet_id = "e9b6m0jmtruhhm3r4bdj"
+    nat            = true
+  }
+
+#Indicate the path to the ssh key
+  metadata = {
+    ssh-keys = "ubuntu:${file("/home/dmitry/lessonmonit/Lesson14Template/test.pub")}"
+  }
+}
+resource "yandex_compute_instance" "build" {
+  name        = "slave"
   platform_id = "standard-v1"
   zone        = "ru-central1-a"
 #Chose count core and ram
@@ -40,6 +66,6 @@ resource "yandex_compute_instance" "build" {
 
 #Indicate the path to the ssh key
   metadata = {
-    ssh-keys = "ubuntu:${file("/home/dmitry/test/Lesson14Terraform/test.pub")}"
+    ssh-keys = "ubuntu:${file("/home/dmitry/lessonmonit/Lesson14Template/test2.pub")}"
   }
 }
